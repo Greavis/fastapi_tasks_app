@@ -27,27 +27,22 @@ class Tasks():
             return {"status": "can be 'open', 'in_progress' or 'done'"}
         if not self.priority_validate(priority):
             return {"priority": "can be 'low', 'medium' or 'high'"}
-
-        self.title = title
-        self.description = description
-        self.status = status
-        self.priority = priority
         
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
         last_task_pos = len(data["tasks"]) - 1
-        self.task_id = data["tasks"][last_task_pos]["id"] + 1
-
-        data['tasks'].append({
-            "id": self.task_id,
-            "title": self.title,
-            "description": self.description,
-            "status": self.status,
-            "priority": self.priority
-        })
+        task_id = data["tasks"][last_task_pos]["id"] + 1
+        new_task = {
+            "id": task_id,
+            "title": title,
+            "description": description,
+            "status": status,
+            "priority": priority
+        }
+        data['tasks'].append(new_task)
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
-        return {"200": "OK"}
+        return new_task
 
     def get_tasks(self, status, priority):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -68,7 +63,10 @@ class Tasks():
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
         if task_id <= 0:
-            return {"error": "task_id must be higter than 0"}
+            raise HTTPException(
+                status_code=400,
+                detail="task_id must be greater than 0"
+            )
         for task in data["tasks"]:
             if task["id"] == task_id:
                 return task
@@ -77,7 +75,12 @@ class Tasks():
     def update_task(self, task_id, title, description, status, priority):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
-        task = data["tasks"][task_id - 1] if len(data["tasks"]) >= task_id else None
+        task = None
+        for item in data["tasks"]:
+            if item["id"] == task_id:
+                task = item
+                break
+            
         if task is None:
             raise HTTPException(status_code=404, detail="Tasks Not Found")
 
@@ -107,7 +110,7 @@ class Tasks():
         
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
-        return {"200": "OK"}
+        return new_task_data
 
     def delete_task(self, task_id):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
