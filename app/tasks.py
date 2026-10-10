@@ -44,15 +44,30 @@ class Tasks():
             json.dump(data, f, ensure_ascii=False, indent=4)
         return new_task
 
-    def get_tasks(self, status, priority):
+    def get_tasks(self, status, priority, search, order, sort_by):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         tasks = [
             task for task in data["tasks"]
-            if (status is None or task["status"] == status)
+            if (search is None or search.lower() in task["title"].lower())
+            and (status is None or task["status"] == status)
             and (priority is None or task["priority"] == priority)
         ]
+
+        if sort_by and sort_by != "priority":
+            tasks.sort(key=lambda task: task[sort_by].lower())
+
+        if sort_by and sort_by == "priority":
+            priority_order = {
+                "high": 1,
+                "medium": 2,
+                "low": 3
+            }
+            tasks.sort(key=lambda task: priority_order[task[sort_by].lower()])
+        
+        if order == "desc":
+            tasks.reverse()
 
         if not tasks:
             raise HTTPException(status_code=404, detail="Tasks Not Found")
