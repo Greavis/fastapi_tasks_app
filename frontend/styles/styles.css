@@ -3,7 +3,6 @@ body {
     align-items: center;
     margin: 0 auto;
     padding: 50px;
-    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -35,6 +34,7 @@ body {
 }
 
 .side_menu {
+    display: flex;
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -85,7 +85,119 @@ body {
     outline: none;
     border-radius: 11px;
     border: 1px solid #344e6e !important;
-    padding: 7px;
+    padding: 7px 15px;
     box-shadow: none;
     width: 70%;
+}
+
+.content_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profile_info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.notify_btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #6da3e6;
+    border-radius: 50%;
+    background-color: #c6c6c6;
+}
+
+.profile_img {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #6da3e6;
+    border-radius: 50%;
+    background-color: #c6c6c6;
+}
+
+.tasks {
+    margin-top: 20px;
+    background-color: #2b415c;
+    border: 1px solid #365172;
+    border-radius: 14px;
+    padding: 20px;
+    color: #cecece;
+}
+
+.tasks_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+h3.tasks_title {
+    margin: 0;
+}
+
+table.tasks_table {
+    display: flex;
+    flex-direction: column;
+}
+
+thead {
+    margin-bottom: 10px;
+    background-color: #395679;
+}
+
+tr {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid;
+    padding: 7px 0;
+}
+
+th {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+th:nth-child(1) {
+    width: 20%;
+}
+
+td {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 24px;
+}
+
+td:nth-child(1) {
+    width: 20%;
+}
+
+td:nth-child(2) {
+    justify-content: left;
+}
+
+td.priority_high {
+    background-color: #a32222;
+    border: 1px solid #761818;
+    border-radius: 6px;
+}
+
+td.priority_medium {
+    background-color: #af5438;
+    border: 1px solid #693221;
+    border-radius: 6px;
+}
+
+td.priority_low {
+    background-color: #22a336;
+    border: 1px solid #1a7929;
+    border-radius: 6px;
 }
